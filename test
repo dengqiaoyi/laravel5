@@ -1,0 +1,93 @@
+//流程：1、注册路由（Http->requests->routes） 2、第二个参数指定执行控制器@方法 3、方法中加载视图
+//展示html 
+//Route::get('地址目录',函数); 注册路由
+//view 返回页面  view('文件标示符 views 文件夹下创建.php  可以省去路径和后缀',)
+Route::get('/',function(){
+
+     return view('welcome');
+     
+});
+
+//控制器调用代匿名函数，控制器controllers 来调用、跳转页面: Auth文件夹下 创建一个SitesController.php
+//命令行：php artison make:controller SiteController--plain(无预定义方法)
+//在控制器的finction中写入页面跳转
+Route::get('/','SiteController@index');
+
+//SitesController.php 
+public function index(){
+return view('welcome');
+}
+
+
+
+
+
+//blade视图传递变量
+
+//with('视图中的变量名'，变量值)
+public function about(){
+
+$name='dqy';
+return view('sites.about')->with('name',$name);
+
+}
+
+//sites->about.blade.php
+<h1>i am{{$name}}</h1>
+
+//数组传递多个变量
+public function about(){
+return view('sites.about')->with([
+'first'=>'qy',
+'last5'=>'d'
+]);
+}
+
+//不使用with
+public function about(){
+$data=[];
+$data['first']='qy';
+$data['last']='d';
+return view('sites.about',$data);
+}
+
+
+
+
+
+//重用继承 views->vendor->layout.blade.php   @yield('content'重用区域
+<html>
+<head>
+</head>
+<body>
+@yield('content')
+</body>
+</html>
+
+//about 
+//@section('content') -------@stop插入conten
+
+@ectends('layout')
+@section('content')
+<h1> i am {{$name}}</h1>
+//<script>alert('contact page');<script> 
+@stop
+
+
+
+
+//if else
+@if($name=='dqy')
+<h1> i am {{$name}}</h1>
+
+@else 
+<h1> i am bananaman</h1>
+@endif
+
+
+
+
+//foreach
+@foreach($peopel as person)
+<li>{{$person}}<li>
+@endforeach
